@@ -111,6 +111,78 @@ class GSheetsDB:
             log.error(f"خطای GSpread در get_all_records برای شیت '{sheet_name}': {e}")
             return []
 
+    # --- Roommate Ad Methods ---
+
+    def save_roommate_ad(self, ad_data: Dict[str, Any]) -> bool:
+        """یک آگهی هم‌اتاقی جدید را در شیت 'roommates' ذخیره یا به‌روزرسانی می‌کند."""
+        try:
+            ads_sheet = self._get_worksheet("roommates")
+            headers = ads_sheet.row_values(1)
+            if not headers:
+                headers = list(ad_data.keys())
+                ads_sheet.append_row(headers, value_input_option='USER_ENTERED')
+
+            user_id_str = str(ad_data.get("user_id"))
+            cell = ads_sheet.find(user_id_str, in_column=1)
+
+            row_values = [ad_data.get(h, "") for h in headers]
+
+            if cell:
+                ads_sheet.update(f'A{cell.row}', [row_values])
+                log.info(f"آگهی هم‌اتاقی کاربر {user_id_str} به‌روزرسانی شد.")
+            else:
+                ads_sheet.append_row(row_values, value_input_option='USER_ENTERED')
+                log.info(f"آگهی جدید هم‌اتاقی برای کاربر {user_id_str} اضافه شد.")
+            return True
+        except gspread.exceptions.GSpreadException as e:
+            log.error(f"خطای GSpread در save_roommate_ad: {e}")
+            return False
+
+    def get_user_ad(self, user_id: int) -> Optional[Dict[str, Any]]:
+        """آگهی یک کاربر خاص را از شیت 'roommates' می‌خواند."""
+        try:
+            ads_sheet = self._get_worksheet("roommates")
+            cell = ads_sheet.find(str(user_id), in_column=1)
+            if cell:
+                headers = ads_sheet.row_values(1)
+                values = ads_sheet.row_values(cell.row)
+                return dict(zip(headers, values))
+            return None
+        except gspread.exceptions.GSpreadException as e:
+            log.error(f"خطای GSpread در get_user_ad برای user_id {user_id}: {e}")
+            return None
+
+    def delete_user_ad(self, user_id: int) -> bool:
+        """آگهی یک کاربر را از شیت 'roommates' حذف می‌کند."""
+        try:
+            ads_sheet = self._get_worksheet("roommates")
+            cell = ads_sheet.find(str(user_id), in_column=1)
+            if cell:
+                ads_sheet.delete_rows(cell.row)
+                log.info(f"آگهی هم‌اتاقی کاربر {user_id} حذف شد.")
+                return True
+            return False
+        except gspread.exceptions.GSpreadException as e:
+            log.error(f"خطای GSpread در delete_user_ad برای user_id {user_id}: {e}")
+            return False
+
+    # --- Admin Methods ---
+
+    def get_admins(self) -> List[int]:
+        """لیستی از شناسه‌های کاربری ادمین‌ها را برمی‌گرداند."""
+        try:
+            # TODO: کش کردن این لیست در Redis برای بهبود عملکرد
+            admin_sheet = self._get_worksheet("admins")
+            # فرض می‌کنیم شناسه کاربری در ستون اول است
+            admin_ids = admin_sheet.col_values(1)[1:] # [1:] برای رد شدن از هدر
+            return [int(id) for id in admin_ids if id.isdigit()]
+        except gspread.exceptions.GSpreadException as e:
+            log.error(f"خطای GSpread در get_admins: {e}")
+            return []
+        except Exception as e:
+            log.error(f"خطای ناشناخته در get_admins: {e}")
+            return []
+
 try:
     db_instance = GSheetsDB()
 except Exception as e:

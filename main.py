@@ -24,7 +24,7 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Mess
 import config
 
 # --- وارد کردن هندلرها از پوشه handlers ---
-from handlers import start_menu, register, weather, isee, resources_hub, profile, upload
+from handlers import start_menu, register, weather, isee, resources_hub, profile, upload, roommate, news, live_chat
 
 # 1. --- مقداردهی اولیه اپلیکیشن FastAPI ---
 app = FastAPI(
@@ -111,6 +111,14 @@ application.add_handler(CommandHandler("weather", weather.weather_handler))
 application.add_handler(register.register_conv_handler)
 application.add_handler(isee.isee_conv_handler)
 application.add_handler(upload.upload_conv_handler)
+application.add_handler(roommate.roommate_conv_handler)
+application.add_handler(CommandHandler("news", news.show_latest_news))
+application.add_handler(news.post_news_conv_handler)
+# Live Chat handlers
+application.add_handler(CommandHandler("live_chat", live_chat.start_live_chat))
+application.add_handler(CommandHandler("end_chat", live_chat.end_live_chat))
+application.add_handler(live_chat.live_chat_message_handler, group=-1) # group=-1 to process before other message handlers
+
 
 # --- CallbackQueryHandler اصلی برای مدیریت دکمه‌های شیشه‌ای ---
 async def main_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -137,6 +145,14 @@ async def main_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
             await profile.execute_delete_profile(update, context)
         elif data == "profile_delete_cancel":
             await profile.cancel_delete_profile(update, context)
+
+    elif data.startswith("roommate_"):
+        # این روت‌ها توسط ConversationHandler داخلی roommate مدیریت می‌شوند
+        if data == "roommate_menu":
+            await roommate.roommate_menu(update, context)
+
+    elif data.startswith("livechat_connect:"):
+        await live_chat.connect_to_user(update, context)
 
     else:
         # برای سایر دکمه‌ها در آینده
