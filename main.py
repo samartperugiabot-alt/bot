@@ -24,7 +24,7 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Mess
 import config
 
 # --- وارد کردن هندلرها از پوشه handlers ---
-from handlers import start_menu, register, weather, isee, resources_hub
+from handlers import start_menu, register, weather, isee, resources_hub, profile, upload
 
 # 1. --- مقداردهی اولیه اپلیکیشن FastAPI ---
 app = FastAPI(
@@ -106,9 +106,11 @@ def ready_check():
 # 4. --- ثبت هندلرها ---
 # این بخش منطق ربات را به اپلیکیشن متصل می‌کند.
 application.add_handler(CommandHandler("start", start_menu.start))
+application.add_handler(CommandHandler("profile", profile.view_profile))
 application.add_handler(CommandHandler("weather", weather.weather_handler))
 application.add_handler(register.register_conv_handler)
 application.add_handler(isee.isee_conv_handler)
+application.add_handler(upload.upload_conv_handler)
 
 # --- CallbackQueryHandler اصلی برای مدیریت دکمه‌های شیشه‌ای ---
 async def main_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -118,6 +120,7 @@ async def main_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
     """
     query = update.callback_query
     data = query.data
+    await query.answer() # به تلگرام اعلام می‌کنیم که کلیک را دریافت کردیم
 
     if data.startswith("hub_"):
         if data == "hub_main":
@@ -126,9 +129,18 @@ async def main_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
             await resources_hub.hub_category_menu(update, context)
         elif data.startswith("hub_art:"):
             await resources_hub.hub_show_article(update, context)
+
+    elif data.startswith("profile_delete"):
+        if data == "profile_delete_confirm":
+            await profile.confirm_delete_profile(update, context)
+        elif data == "profile_delete_execute":
+            await profile.execute_delete_profile(update, context)
+        elif data == "profile_delete_cancel":
+            await profile.cancel_delete_profile(update, context)
+
     else:
         # برای سایر دکمه‌ها در آینده
-        await query.answer("این دکمه هنوز فعال نشده است.")
+        await query.edit_message_text("این دکمه هنوز فعال نشده است یا عملیات منقضی شده.")
 
 application.add_handler(CallbackQueryHandler(main_callback_handler))
 

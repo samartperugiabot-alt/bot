@@ -1,28 +1,17 @@
 """
-ماژول مدیریت گوگل درایو (Google Drive Module)
+ماژول مدیریت گوگل درایو (Google Drive Module) - نسخه کامل
 
-این فایل مسئولیت تعامل با Google Drive API را برای آپلود فایل‌ها (مانند رزومه،
-مدارک و فایل‌های تولید شده توسط ربات) بر عهده دارد.
-
-کلاس `GDriveUploader`:
--   از همان اعتبارنامه‌های سرویس اکانت (`config.GOOGLE_CREDS`) که برای Google Sheets
-    استفاده می‌شود، برای احراز هویت در Google Drive API بهره می‌برد.
--   یک متد اصلی `upload_file` دارد که یک فایل را از سیستم محلی دریافت کرده و
-    در فولدر مشخص شده در `config.GOOGLE_DRIVE_UPLOAD_FOLDER_ID` آپلود می‌کند.
-
-نکات پیاده‌سازی:
--   باید نوع فایل (MIME type) بررسی شود تا از آپلود فایل‌های مخرب جلوگیری شود.
--   برای فایل‌های بزرگ، باید از آپلود چندبخشی (multipart upload) استفاده شود.
--   لینک قابل اشتراک‌گذاری فایل آپلود شده باید برگردانده شود تا در Google Sheets
-    ذخیره شود.
+این فایل مسئولیت تعامل با Google Drive API را برای آپلود فایل‌ها بر عهده دارد.
 """
+import mimetypes
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from oauth2client.service_account import ServiceAccountCredentials
 import config
 from typing import Optional
+from utils.logger import log
 
-# همان scopes که در gsheets.py تعریف شد، برای Drive نیز کافی است.
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
@@ -32,20 +21,21 @@ class GDriveUploader:
     _instance = None
     _service = None
 
-    def __new__(cls):
+    def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super(GDriveUploader, cls).__new__(cls)
-            try:
-                # --- احراز هویت ---
-                creds = ServiceAccountCredentials.from_json_keyfile_dict(config.GOOGLE_CREDS, SCOPES)
-                # ساخت سرویس Drive API
-                cls._instance._service = build('drive', 'v3', credentials=creds)
-                print("✅ اتصال به Google Drive با موفقیت برقرار شد.")
-            except Exception as e:
-                print(f"❌ خطای اتصال به Google Drive: {e}")
-                cls._instance = None
-                raise e
+            cls._instance = super().__new__(cls)
         return cls._instance
+
+    def __init__(self):
+        if not hasattr(self, '_service'):
+            try:
+                creds = ServiceAccountCredentials.from_json_keyfile_dict(config.GOOGLE_CREDS, SCOPES)
+                self._service = build('drive', 'v3', credentials=creds)
+                log.info("✅ اتصال به Google Drive با موفقیت برقرار شد.")
+            except Exception as e:
+                log.error(f"❌ خطای اتصال به Google Drive: {e}")
+                self._service = None
+                raise ConnectionError(f"خطای اتصال به Google Drive: {e}")
 
     def upload_file(self, local_filepath: str, remote_filename: str) -> Optional[str]:
         """
@@ -56,40 +46,57 @@ class GDriveUploader:
             remote_filename (str): نام فایلی که در Drive ذخیره خواهد شد.
 
         Returns:
-            آدرس (ID) فایل آپلود شده در Drive یا None در صورت خطا.
+            ID فایل آپلود شده در Drive یا None در صورت خطا.
         """
-        # TODO: پیاده‌سازی واقعی
-        # 1. نوع MIME فایل را مشخص کن.
-        # 2. متادیتای فایل را بساز (نام فایل، فولدر والد).
-        # 3. با استفاده از MediaFileUpload، فایل را آپلود کن.
-        # 4. دسترسی فایل را به "anyone with link" تغییر بده (اختیاری).
-        # 5. ID فایل آپلود شده را برگردان.
+        if not self._service:
+            log.error("سرویس Google Drive در دسترس نیست. آپلود لغو شد.")
+            return None
 
-        print(f"[GDRIVE_STUB] آپلود فایل '{local_filepath}' با نام '{remote_filename}'")
-        # Stub:
-        # file_metadata = {
-        #     'name': remote_filename,
-        #     'parents': [config.GOOGLE_DRIVE_UPLOAD_FOLDER_ID]
-        # }
-        # media = MediaFileUpload(local_filepath, mimetype='application/pdf', resumable=True)
-        # file = self._service.files().create(
-        #     body=file_metadata,
-        #     media_body=media,
-        #     fields='id'
-        # ).execute()
-        # return file.get('id')
+        try:
+            # تعیین نوع MIME فایل
+            mimetype, _ = mimetypes.guess_type(local_filepath)
+            if mimetype is None:
+                mimetype = 'application/octet-stream' # نوع پیش‌فرض
 
-        # برای تست، یک ID ساختگی برمی‌گردانیم.
-        return "stub_drive_file_id_12345"
+            file_metadata = {
+                'name': remote_filename,
+                'parents': [config.GOOGLE_DRIVE_UPLOAD_FOLDER_ID]
+            }
 
-# ایجاد یک نمونه Singleton
+            media = MediaFileUpload(local_filepath, mimetype=mimetype, resumable=True)
+
+            log.info(f"شروع آپلود فایل '{remote_filename}' به Google Drive...")
+
+            file = self._service.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='id'
+            ).execute()
+
+            file_id = file.get('id')
+            log.info(f"فایل با موفقیت آپلود شد. شناسه فایل: {file_id}")
+
+            return file_id
+
+        except FileNotFoundError:
+            log.error(f"فایل محلی برای آپلود یافت نشد: {local_filepath}")
+            return None
+        except HttpError as error:
+            log.error(f"خطای HTTP هنگام آپلود به Google Drive رخ داد: {error}")
+            return None
+        except Exception as e:
+            log.error(f"خطای ناشناخته هنگام آپلود به Google Drive: {e}")
+            return None
+
 try:
     drive_uploader_instance = GDriveUploader()
-except Exception:
+except Exception as e:
+    log.critical(f"راه‌اندازی اولیه GDriveUploader ناموفق بود: {e}")
     drive_uploader_instance = None
 
-def get_drive_uploader():
+def get_drive_uploader() -> Optional[GDriveUploader]:
     """این تابع یک نمونه از آپلودر درایو را برمی‌گرداند."""
     if not drive_uploader_instance:
-        raise ConnectionError("اتصال به Google Drive برقرار نیست.")
+        log.error("نمونه GDriveUploader در دسترس نیست.")
+        return None
     return drive_uploader_instance
