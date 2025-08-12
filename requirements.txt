@@ -1,0 +1,32 @@
+# Telegram Bot
+python-telegram-bot[job-queue]>=20.0  # Core library for the bot
+
+# Web Framework for Webhook
+fastapi>=0.104.0
+uvicorn[standard]>=0.23.0
+
+# API Communication
+requests>=2.31.0
+
+# Google Services
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.0
+google-auth-oauthlib>=1.0.0
+gspread>=5.12.0  # Simplified Google Sheets access
+oauth2client>=4.1.3
+
+# Redis for Cache, Queue, Rate Limiting
+redis>=5.0.1
+
+# Data Parsing/Handling
+feedparser>=6.0.10  # For RSS feeds
+python-dotenv>=1.0.0  # For local development
+
+# PDF Generation
+reportlab>=4.0.4
+
+# Security
+cryptography>=41.0.4
+
+# Optional: for admin dashboard
+Jinja2>=3.1.2

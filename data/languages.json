@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "محتوای آموزشی زبان ایتالیایی"
+  },
+  "lessons": [
+    {
+      "id": "greetings_101",
+      "level": "A1",
+      "title_fa": "درس ۱: سلام و احوال‌پرسی",
+      "title_en": "Lesson 1: Greetings",
+      "content_fa": "Ciao! (سلام/خداحافظ - غیررسمی)\nBuongiorno (صبح بخیر)\nBuonasera (عصر بخیر)\nCome stai? (حالت چطور است؟ - غیررسمی)\nCome sta? (حال شما چطور است؟ - رسمی)",
+      "content_en": "Ciao! (Hello/Bye - informal)\nBuongiorno (Good morning)\nBuonasera (Good evening)\nCome stai? (How are you? - informal)\nCome sta? (How are you? - formal)"
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "quiz_greetings",
+      "lesson_id": "greetings_101",
+      "questions": [
+        {
+          "q": "معنی 'Ciao' چیست؟",
+          "options": ["صبح بخیر", "سلام/خداحافظ", "لطفاً"],
+          "answer": "سلام/خداحافظ"
+        }
+      ]
+    }
+  ]
+}

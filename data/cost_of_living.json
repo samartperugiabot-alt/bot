@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "داده‌های هزینه زندگی برای شهرهای مختلف ایتالیا.",
+    "currency": "EUR"
+  },
+  "cities": [
+    {
+      "city": "Perugia",
+      "country": "Italy",
+      "costs": {
+        "rent_single_room_central": {
+          "min": 250,
+          "max": 400,
+          "description_fa": "اجاره اتاق یک نفره در مرکز شهر"
+        },
+        "rent_single_room_suburbs": {
+          "min": 200,
+          "max": 300,
+          "description_fa": "اجاره اتاق یک نفره در حومه"
+        },
+        "food_monthly": {
+          "min": 200,
+          "max": 350,
+          "description_fa": "هزینه خوراک ماهانه"
+        },
+        "transport_monthly_pass": {
+          "min": 35,
+          "max": 50,
+          "description_fa": "کارت حمل و نقل عمومی ماهانه"
+        }
+      }
+    },
+    {
+      "city": "Rome",
+      "country": "Italy",
+      "costs": {
+        "rent_single_room_central": {
+          "min": 450,
+          "max": 700,
+          "description_fa": "اجاره اتاق یک نفره در مرکز شهر"
+        },
+        "rent_single_room_suburbs": {
+          "min": 350,
+          "max": 500,
+          "description_fa": "اجاره اتاق یک نفره در حومه"
+        },
+        "food_monthly": {
+          "min": 300,
+          "max": 500,
+          "description_fa": "هزینه خوراک ماهانه"
+        },
+        "transport_monthly_pass": {
+          "min": 35,
+          "max": 55,
+          "description_fa": "کارت حمل و نقل عمومی ماهانه"
+        }
+      }
+    }
+  ]
+}

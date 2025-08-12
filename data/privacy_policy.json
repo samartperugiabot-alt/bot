@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2024-05-21"
+  },
+  "policy_fa": {
+    "title": "سیاست حفظ حریم خصوصی",
+    "introduction": "ما به حریم خصوصی شما احترام می‌گذاریم. این سند توضیح می‌دهد که چه داده‌هایی را جمع‌آوری می‌کنیم و چگونه از آن‌ها استفاده می‌کنیم.",
+    "data_collected": [
+      "شناسه کاربری تلگرام (برای شناسایی شما)",
+      "نام، سن، کشور، رشته و ایمیل (در صورت ثبت‌نام)",
+      "لاگ‌های تعاملات شما با ربات (برای بهبود سرویس)"
+    ],
+    "data_usage": "از این داده‌ها برای شخصی‌سازی تجربه شما، ارائه خدمات و تحلیل عملکرد ربات استفاده می‌شود. ما اطلاعات شما را با شخص ثالث به اشتراک نمی‌گذاریم.",
+    "data_deletion": "شما می‌توانید در هر زمان با ارسال دستور /delete_me تمام اطلاعات خود را از سیستم ما حذف کنید."
+  },
+  "policy_en": {
+    "title": "Privacy Policy",
+    "introduction": "We respect your privacy. This document explains what data we collect and how we use it.",
+    "data_collected": [
+      "Your Telegram user ID (to identify you)",
+      "Name, age, country, field of study, and email (upon registration)",
+      "Logs of your interactions with the bot (to improve the service)"
+    ],
+    "data_usage": "This data is used to personalize your experience, provide services, and analyze bot performance. We do not share your information with third parties.",
+    "data_deletion": "You can delete all your data from our system at any time by sending the /delete_me command."
+  }
+}

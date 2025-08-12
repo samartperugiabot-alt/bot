@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "محل ذخیره اخبار در صورت استفاده از روش ذخیره‌سازی JSON."
+  },
+  "news": [
+    {
+      "id": "news_001",
+      "author_id": "admin_user_id",
+      "timestamp": "2024-05-21T10:00:00Z",
+      "title_fa": "شروع کلاس‌های ترم جدید",
+      "title_en": "New Semester Classes Begin",
+      "content_fa": "کلاس‌های ترم پاییز از تاریخ ۲۰ سپتامبر به صورت حضوری آغاز خواهند شد.",
+      "content_en": "Fall semester classes will begin in person on September 20th.",
+      "media_url": null
+    }
+  ]
+}

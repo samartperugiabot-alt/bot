@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "فهرست اصلی مرکز منابع (Resources Hub). هر آیتم به یک فایل JSON مجزا اشاره دارد."
+  },
+  "categories": [
+    {
+      "id": "essentials",
+      "title_fa": "مراحل ضروری اولیه",
+      "title_en": "Essential First Steps"
+    },
+    {
+      "id": "university",
+      "title_fa": "دانشگاه و تحصیل",
+      "title_en": "University & Studies"
+    },
+    {
+      "id": "life_in_italy",
+      "title_fa": "زندگی در ایتالیا",
+      "title_en": "Life in Italy"
+    }
+  ],
+  "items": [
+    {
+      "id": "residency_permit",
+      "category_id": "essentials",
+      "file": "residency.json",
+      "title_fa": "کارت اقامت (Permesso di Soggiorno)",
+      "title_en": "Residency Permit (Permesso di Soggiorno)",
+      "tags": ["اقامت", "پلیس", "اداری"],
+      "last_updated": "2024-05-20"
+    },
+    {
+      "id": "tax_code",
+      "category_id": "essentials",
+      "file": "tax_code.json",
+      "title_fa": "کد مالیاتی (Codice Fiscale)",
+      "title_en": "Tax Code (Codice Fiscale)",
+      "tags": ["مالیات", "اداری"],
+      "last_updated": "2024-05-19"
+    },
+    {
+      "id": "housing_guide",
+      "category_id": "life_in_italy",
+      "file": "housing.json",
+      "title_fa": "راهنمای پیدا کردن مسکن",
+      "title_en": "Guide to Finding Housing",
+      "tags": ["خانه", "اجاره", "مسکن"],
+      "last_updated": "2024-05-21"
+    }
+  ]
+}

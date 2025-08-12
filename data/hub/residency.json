@@ -1,0 +1,40 @@
+{
+  "id": "residency_permit",
+  "title_fa": "راهنمای کامل کارت اقامت (Permesso di Soggiorno)",
+  "title_en": "Complete Guide to Residency Permit (Permesso di Soggiorno)",
+  "version": "1.1",
+  "last_updated": "2024-05-20",
+  "content": [
+    {
+      "type": "section",
+      "id": "intro",
+      "title_fa": "کارت اقامت چیست؟",
+      "title_en": "What is the Residency Permit?",
+      "body_fa": "کارت اقامت یا Permesso di Soggiorno یک مدرک ضروری برای تمامی شهروندان غیراروپایی است که قصد دارند بیش از ۹۰ روز در ایتالیا بمانند. این کارت هویت شما در ایتالیاست.",
+      "body_en": "The Permesso di Soggiorno is an essential document for all non-EU citizens who intend to stay in Italy for more than 90 days. It is your official identification in Italy."
+    },
+    {
+      "type": "section",
+      "id": "kit_application",
+      "title_fa": "مرحله اول: دریافت و تکمیل کیت پستی (Kit Postale)",
+      "title_en": "Step 1: Getting and Completing the Postal Kit (Kit Postale)",
+      "body_fa": "شما باید به یکی از دفاتر پست (Poste Italiane) که دارای باجه 'Sportello Amico' هستند مراجعه کرده و کیت زرد رنگ را دریافت کنید. این کیت شامل فرم‌هایی است که باید با دقت تکمیل شوند.",
+      "body_en": "You must go to a Post Office (Poste Italiane) with a 'Sportello Amico' counter and get the yellow kit (Kit Giallo). This kit contains forms that must be carefully filled out.",
+      "links": [
+        {
+          "text_fa": "پیدا کردن نزدیک‌ترین دفتر پست",
+          "text_en": "Find the nearest Post Office",
+          "url": "https://www.poste.it/cerca/index.html#/vieni-in-poste"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "id": "required_documents",
+      "title_fa": "مدارک مورد نیاز",
+      "title_en": "Required Documents",
+      "body_fa": "- کپی از تمام صفحات پاسپورت\n- نامه پذیرش دانشگاه\n- بیمه درمانی\n- تمبر ۱۶ یورویی (Marca da Bollo)\n- رسید پرداخت هزینه صدور کارت",
+      "body_en": "- Photocopy of all passport pages\n- University admission letter\n- Health insurance\n- A €16 revenue stamp (Marca da Bollo)\n- Receipt of payment for the permit issuance fee"
+    }
+  ]
+}
